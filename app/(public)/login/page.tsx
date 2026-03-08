@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -13,6 +13,21 @@ export default function LoginPage() {
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+
+  // Handle OAuth redirect — if we land back here with a session, go to dashboard
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.push('/dashboard')
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        router.push('/dashboard')
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [router])
 
   const handleSubmit = async () => {
     setError(''); setMessage(''); setLoading(true)
@@ -38,7 +53,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://effortless.quest/auth/callback',
+        redirectTo: 'https://www.effortless.quest/login',
       },
     })
     if (error) {
@@ -61,7 +76,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Google */}
           <button
             onClick={handleGoogle}
             disabled={loading}
@@ -80,7 +94,6 @@ export default function LoginPage() {
             <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
           </div>
 
-          {/* Fields */}
           <div className="flex flex-col gap-4 mb-6">
             <div>
               <label className="block text-xs font-bold tracking-widest uppercase mb-2" style={{ fontFamily: 'var(--font-ui)', color: 'var(--muted)' }}>
@@ -115,7 +128,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Error / Success messages */}
           {error && (
             <div className="mb-4 px-4 py-3 rounded-xl text-xs" style={{ background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.4)', color: 'var(--red)', fontFamily: 'var(--font-ui)' }}>
               {error}
