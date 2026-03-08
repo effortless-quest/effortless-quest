@@ -37,7 +37,9 @@ export default function LoginPage() {
     setError(''); setLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/dashboard` }
+      options: {
+        redirectTo: 'https://effortless.quest/auth/callback',
+      },
     })
     if (error) {
       setError(error.message)
