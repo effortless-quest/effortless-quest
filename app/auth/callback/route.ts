@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/dashboard'
 
+  // PKCE flow — exchange code for session
   if (code) {
     const cookieStore = await cookies()
 
@@ -35,6 +36,12 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Auth failed — redirect to login with error
+  // Implicit flow — token comes back as a URL fragment (#access_token=...)
+  // Fragments can't be read server-side, so redirect to a client page that handles it
+  const hasFragment = request.url.includes('access_token=') || request.url.includes('error=')
+  if (!code && hasFragment) {
+    return NextResponse.redirect('https://effortless.quest/auth/confirm')
+  }
+
   return NextResponse.redirect('https://effortless.quest/login?error=auth_failed')
 }
