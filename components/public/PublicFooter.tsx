@@ -21,6 +21,8 @@ const footerLinks = {
     { label: 'Luma AI Hub', href: '/#luma' },
     { label: 'Contact', href: '/about#contact' },
     { label: 'Login', href: '/login' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms of Service', href: '/terms' },
   ],
 };
 
@@ -89,7 +91,13 @@ export default function PublicFooter() {
           <p className="text-xs" style={{ color: 'rgba(139,127,168,.6)' }}>
             © 2025 Effortless Quest. Part of the Effortless Works Family.
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap justify-center">
+            <Link href="/privacy" className="text-xs no-underline transition-colors duration-200" style={{ color: 'rgba(139,127,168,.6)' }}>
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-xs no-underline transition-colors duration-200" style={{ color: 'rgba(139,127,168,.6)' }}>
+              Terms of Service
+            </Link>
             <a href="https://effortlessworks.store" target="_blank" rel="noreferrer" className="text-xs no-underline transition-colors duration-200" style={{ color: 'var(--neon2)' }}>
               effortlessworks.store
             </a>
