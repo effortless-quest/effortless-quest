@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void: #03020a;
+  --deep: #070514;
+  --dark: #0d0b1e;
+  --card: #110e24;
+  --border: #2a1f4e;
+  --border2: #3d2d6e;
+  --gold: #f5c842;
+  --gold2: #e8a020;
+  --amber: #ff8c00;
+  --neon: #7c3aed;
+  --neon2: #a855f7;
+  --cyan: #06b6d4;
+  --green: #22c55e;
+  --red: #ef4444;
+  --text: #e2d9f3;
+  --muted: #8b7fa8;
+  --font-display: 'Cinzel Decorative', serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-ui: 'Exo 2', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes pulse-ring { 0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.03);opacity:.5} }
+@keyframes luma-pulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.08)} }
+@keyframes scroll-banner { from{transform:translateX(0)}to{transform:translateX(-50%)} }
+@keyframes node-pulse { 0%,100%{box-shadow:0 0 16px rgba(245,200,66,.6)}50%{box-shadow:0 0 30px rgba(245,200,66,.9)} }
+@keyframes fade-up { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+
+.animate-scroll-banner { animation: scroll-banner 30s linear infinite; }
+.animate-luma-pulse { animation: luma-pulse 3s ease-in-out infinite; }
+.animate-node-pulse { animation: node-pulse 2s infinite; }
+
+.sidebar-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 8px;
+  font-family: var(--font-ui); font-size: .82rem; font-weight: 600;
+  color: var(--muted); text-decoration: none;
+  transition: all .2s; border: 1px solid transparent;
+}
+.sidebar-link:hover { color: var(--text); background: rgba(255,255,255,.04); border-color: var(--border); }
+.sidebar-link.active { color: var(--gold); background: rgba(245,200,66,.08); border-color: rgba(245,200,66,.3); }
