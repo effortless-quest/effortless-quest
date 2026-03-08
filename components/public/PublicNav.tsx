@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const navLinks = [
   { label: 'Quest', href: '/' },
@@ -15,14 +16,35 @@ const navLinks = [
 
 export default function PublicNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setHasSession(!!session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setHasSession(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (hasSession) {
+      router.push('/dashboard');
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <nav
@@ -42,12 +64,11 @@ export default function PublicNav() {
           style={{ fontFamily: 'var(--font-display)', color: 'var(--gold)', letterSpacing: '2px', textShadow: '0 0 20px rgba(245,200,66,.5)' }}
         >
           <span className="text-xl">⚔️</span>
-          {/* Full name on large screens, short on small */}
           <span className="hidden lg:inline text-sm">EFFORTLESS QUEST</span>
           <span className="inline lg:hidden text-xs">EQ</span>
         </Link>
 
-        {/* Desktop links — show on lg and up */}
+        {/* Desktop links */}
         <ul className="hidden lg:flex items-center gap-1.5 list-none">
           {navLinks.map(link => (
             <li key={link.href}>
@@ -66,33 +87,33 @@ export default function PublicNav() {
             </li>
           ))}
           <li>
-            <Link
-              href="/login"
-              className="px-4 py-2 rounded-lg text-xs font-bold tracking-widest uppercase text-white no-underline transition-all duration-200"
+            <button
+              onClick={handleLoginClick}
+              className="px-4 py-2 rounded-lg text-xs font-bold tracking-widest uppercase text-white transition-all duration-200 border-none"
               style={{
                 background: 'linear-gradient(135deg, var(--neon), var(--neon2))',
                 boxShadow: '0 0 20px rgba(124,58,237,.4)',
                 fontFamily: 'var(--font-ui)',
               }}
             >
-              Login ⚔️
-            </Link>
+              {hasSession ? 'Dashboard ⚔️' : 'Login ⚔️'}
+            </button>
           </li>
         </ul>
 
-        {/* Right side on mobile — login button + hamburger */}
+        {/* Mobile — login button + hamburger */}
         <div className="flex lg:hidden items-center gap-3">
-          <Link
-            href="/login"
-            className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider uppercase text-white no-underline"
+          <button
+            onClick={handleLoginClick}
+            className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider uppercase text-white border-none"
             style={{
               background: 'linear-gradient(135deg, var(--neon), var(--neon2))',
               fontFamily: 'var(--font-ui)',
               whiteSpace: 'nowrap',
             }}
           >
-            Login ⚔️
-          </Link>
+            {hasSession ? 'Dashboard ⚔️' : 'Login ⚔️'}
+          </button>
           <button
             className="flex flex-col gap-1.5 bg-transparent border-none p-1 flex-shrink-0"
             onClick={() => setOpen(v => !v)}
