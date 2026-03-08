@@ -1,3 +1,5 @@
+'use client'
+
 import { rewards } from '@/lib/data';
 import type { RewardTier } from '@/types';
 

@@ -1,3 +1,5 @@
+'use client'
+
 export default function AboutPage() {
   const pillars = [
     { icon: '⚔️', title: 'Personal Development', desc: 'Daily quests to sharpen your mind, body, and discipline.' },

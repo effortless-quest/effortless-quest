@@ -11,8 +11,8 @@ const progressColor: Record<string, string> = {
 };
 
 export default function DashboardPage() {
-  const user = useUser();
-  const name = user?.displayName || user?.email?.split('@')[0] || 'Warrior';
+ const { user } = useUser();
+const name = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Warrior';
 
   return (
     <div className="p-6 max-w-6xl">
