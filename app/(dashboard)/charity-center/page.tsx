@@ -1,4 +1,3 @@
-import UnderConstruction from '@/components/shared/UnderConstruction';
 import { charityTasks } from '@/lib/data';
 
 export default function CharityCenterPage() {

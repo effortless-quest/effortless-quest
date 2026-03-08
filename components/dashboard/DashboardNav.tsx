@@ -77,7 +77,7 @@ export default function DashboardNav() {
             </div>
             <div>
               <p className="text-sm font-bold" style={{ color: 'var(--text)', fontFamily: 'var(--font-ui)' }}>
-                {user.displayName || user.email?.split('@')[0] || 'Warrior'}
+                {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Warrior'}
               </p>
               <p className="text-[.7rem]" style={{ color: 'var(--neon2)' }}>Level 1 · Novice</p>
             </div>
