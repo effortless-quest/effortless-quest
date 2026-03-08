@@ -34,19 +34,21 @@ export default function PublicNav() {
         boxShadow: scrolled ? '0 4px 40px rgba(124,58,237,.15)' : 'none',
       }}
     >
-      <div className="max-w-[1400px] mx-auto px-8 h-[70px] flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-6 h-[70px] flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2.5 no-underline"
-          style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', color: 'var(--gold)', letterSpacing: '2px', textShadow: '0 0 20px rgba(245,200,66,.5)' }}
+          className="flex items-center gap-2 no-underline flex-shrink-0"
+          style={{ fontFamily: 'var(--font-display)', color: 'var(--gold)', letterSpacing: '2px', textShadow: '0 0 20px rgba(245,200,66,.5)' }}
         >
           <span className="text-xl">⚔️</span>
-          EFFORTLESS QUEST
+          {/* Full name on large screens, short on small */}
+          <span className="hidden lg:inline text-sm">EFFORTLESS QUEST</span>
+          <span className="inline lg:hidden text-xs">EQ</span>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-1.5 list-none">
+        {/* Desktop links — show on lg and up */}
+        <ul className="hidden lg:flex items-center gap-1.5 list-none">
           {navLinks.map(link => (
             <li key={link.href}>
               <Link
@@ -78,26 +80,39 @@ export default function PublicNav() {
           </li>
         </ul>
 
-        {/* Hamburger */}
-        <button
-          className="flex md:hidden flex-col gap-1.5 bg-transparent border-none p-1"
-          onClick={() => setOpen(v => !v)}
-          aria-label="Toggle menu"
-        >
-          {[0,1,2].map(i => (
-            <span
-              key={i}
-              className="block w-6 h-0.5 rounded transition-all duration-300"
-              style={{ background: 'var(--gold)' }}
-            />
-          ))}
-        </button>
+        {/* Right side on mobile — login button + hamburger */}
+        <div className="flex lg:hidden items-center gap-3">
+          <Link
+            href="/login"
+            className="px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider uppercase text-white no-underline"
+            style={{
+              background: 'linear-gradient(135deg, var(--neon), var(--neon2))',
+              fontFamily: 'var(--font-ui)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Login ⚔️
+          </Link>
+          <button
+            className="flex flex-col gap-1.5 bg-transparent border-none p-1 flex-shrink-0"
+            onClick={() => setOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            {[0, 1, 2].map(i => (
+              <span
+                key={i}
+                className="block w-6 h-0.5 rounded transition-all duration-300"
+                style={{ background: 'var(--gold)' }}
+              />
+            ))}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {open && (
         <div
-          className="md:hidden px-6 pb-6 flex flex-col gap-2"
+          className="lg:hidden px-6 pb-6 flex flex-col gap-2"
           style={{ background: 'rgba(3,2,10,.97)', borderTop: '1px solid var(--border)' }}
         >
           {navLinks.map(link => (
@@ -111,14 +126,6 @@ export default function PublicNav() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            onClick={() => setOpen(false)}
-            className="px-3 py-2.5 rounded-lg text-sm font-bold text-white no-underline text-center mt-2"
-            style={{ background: 'linear-gradient(135deg, var(--neon), var(--neon2))', fontFamily: 'var(--font-ui)' }}
-          >
-            Login ⚔️
-          </Link>
         </div>
       )}
     </nav>
