@@ -54,6 +54,9 @@ export default function LoginPage() {
       provider: 'google',
       options: {
         redirectTo: 'https://www.effortless.quest/login',
+        queryParams: {
+          prompt: 'select_account',
+        },
       },
     })
     if (error) {
