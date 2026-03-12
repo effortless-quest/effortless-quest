@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
 
 const stats = [
-  { num: 10000, display: '10K+', label: 'Active Players' },
-  { num: 2400, display: '2,400', label: 'Businesses' },
-  { num: 180, display: '$180K', label: 'Rewards Issued' },
-  { num: 94, display: '94', label: 'Charity Missions' },
+  { display: '🚀', label: 'Early Access' },
+  { display: '⚔️', label: 'Founding Warriors' },
+  { display: '🏆', label: 'Leaderboards Soon' },
+  { display: '🎁', label: 'Rewards Coming' },
 ];
 
 const rings = [
@@ -18,34 +17,6 @@ const rings = [
 ];
 
 export default function HeroSection() {
-  const statRefs = useRef<(HTMLSpanElement | null)[]>([]);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          statRefs.current.forEach((el, i) => {
-            if (!el) return;
-            const target = stats[i].num;
-            let cur = 0;
-            const inc = target / 80;
-            const timer = setInterval(() => {
-              cur = Math.min(cur + inc, target);
-              if (i === 0) el.textContent = (cur / 1000).toFixed(1) + 'K+';
-              else if (i === 2) el.textContent = '$' + Math.round(cur) + 'K';
-              else el.textContent = Math.round(cur).toLocaleString();
-              if (cur >= target) clearInterval(timer);
-            }, 20);
-          });
-          obs.disconnect();
-        }
-      });
-    }, { threshold: 0.5 });
-
-    const el = document.getElementById('hero-stats');
-    if (el) obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
 
   return (
     <section
@@ -146,10 +117,9 @@ export default function HeroSection() {
 
         {/* Stats */}
         <div id="hero-stats" className="flex gap-12 mt-20 justify-center flex-wrap">
-          {stats.map((stat, i) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <span
-                ref={el => { statRefs.current[i] = el; }}
                 className="block leading-none mb-1"
                 style={{
                   fontFamily: 'var(--font-display)',
